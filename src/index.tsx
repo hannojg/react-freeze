@@ -19,6 +19,7 @@ function Suspender({ freeze, children }: SuspenderProps) {
   if (!freeze && resolverRef.current != null) {
     // Un-freeze: call the resolver to resolve the promise and un-suspend.
     resolverRef.current();
+    resolverRef.current = null;
   }
 
   if (promiseRef.current !== null) {
@@ -30,7 +31,6 @@ function Suspender({ freeze, children }: SuspenderProps) {
     // Only reset promise here, as when un-freezing we want to "ping the attached listeners" that the promise is resolved.
     // Thats why we call the resolver above when !freeze.
     promiseRef.current = null;
-    resolverRef.current = null;
   }
 
   return <Fragment>{children}</Fragment>;
